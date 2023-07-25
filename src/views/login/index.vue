@@ -32,14 +32,21 @@
   import { onMounted, onBeforeUnmount } from 'vue';
   import LoginForm from './components/login-form.vue';
 
+  function computedTransform(num: number, doc: number) {
+    return ((num / doc) * 40 - 20).toFixed(1);
+  }
   const handleMouseMove = (event: MouseEvent) => {
     const container = document.querySelector('.container') as HTMLElement;
+    const logoSize = document.querySelector('.logo-size') as HTMLElement;
     const rect = container.getBoundingClientRect();
     const mouseX = event.clientX - rect.left;
     const mouseY = event.clientY - rect.top;
     const angle = Math.atan2(mouseY, mouseX) * (720 / Math.PI);
     container.style.background = `linear-gradient(${angle}deg, #fbda61, #ff5acd)`;
-};
+    logoSize.style.transform = `
+    rotateX(${computedTransform(event.clientX, window.innerWidth)}deg)
+    rotateY(${computedTransform(event.clientY, window.innerHeight)}deg)`;
+  };
 
   onMounted(() => {
     document.addEventListener('mousemove', handleMouseMove);
@@ -129,6 +136,7 @@
       height: 208px;
       border-radius: 50%;
       // background-color: #fff;
+      box-shadow: 0px 10px 20px 20px rgba(0, 0, 0, 0.17);
       display: flex;
       align-items: center;
       justify-content: center;
