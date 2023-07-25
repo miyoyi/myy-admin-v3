@@ -29,7 +29,25 @@
 <script lang="ts" setup>
   import Footer from '@/components/footer/index.vue';
   // import LoginBanner from './components/banner.vue';
+  import { onMounted, onBeforeUnmount } from 'vue';
   import LoginForm from './components/login-form.vue';
+
+  const handleMouseMove = (event: MouseEvent) => {
+    const container = document.querySelector('.container') as HTMLElement;
+    const rect = container.getBoundingClientRect();
+    const mouseX = event.clientX - rect.left;
+    const mouseY = event.clientY - rect.top;
+    const angle = Math.atan2(mouseY, mouseX) * (720 / Math.PI);
+    container.style.background = `linear-gradient(${angle}deg, #fbda61, #ff5acd)`;
+};
+
+  onMounted(() => {
+    document.addEventListener('mousemove', handleMouseMove);
+  });
+
+  onBeforeUnmount(() => {
+    document.removeEventListener('mousemove', handleMouseMove);
+  });
 </script>
 
 <style lang="less" scoped>
@@ -49,6 +67,7 @@
       align-items: center;
       justify-content: center;
       min-width: 700px;
+
       .content-inner {
         width: 488px;
         height: 600px;
@@ -59,6 +78,7 @@
         align-items: center;
         position: relative;
       }
+
       .content-inner::before {
         content: '';
         position: absolute;
@@ -71,13 +91,16 @@
         z-index: 50;
         animation: floating 3s ease-in-out infinite;
       }
+
       @keyframes floating {
         0% {
           transform: translateY(0);
         }
+
         50% {
           transform: translateY(-50px);
         }
+
         100% {
           transform: translateY(0);
         }
@@ -100,6 +123,7 @@
     align-items: center;
     justify-content: center;
     min-width: 500px;
+
     .logo-size {
       width: 208px;
       height: 208px;
@@ -109,6 +133,7 @@
       align-items: center;
       justify-content: center;
     }
+
     .welcome {
       font-size: 70px;
       font-family: inpinheiti;
@@ -116,12 +141,14 @@
       color: #ffffff;
       margin-top: 62px;
     }
+
     .name {
       color: #ffffff;
       font-size: 40px;
       font-family: Adobe Heiti Std;
       margin-top: 44px;
     }
+
     &-text {
       margin-right: 4px;
       margin-left: 4px;
